@@ -1,4 +1,6 @@
-﻿using WordFinderConsoleApp.Business;
+﻿// Driver program:
+//
+using WordFinderConsoleApp.Business;
 
 IEnumerable<string> matrix = new[]
 {
