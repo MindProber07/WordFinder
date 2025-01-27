@@ -13,7 +13,7 @@ IEnumerable<string> matrix = new[]
 
 IEnumerable<string> wordstream = new[]
 {
-    "chill", "cold", "wind"
+    "chill", "cold", "wind", "win", "old"
 };
 
 IWordFinder wordFinder = new WordFinder(matrix);
