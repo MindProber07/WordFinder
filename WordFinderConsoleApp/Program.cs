@@ -23,7 +23,7 @@ var i = 0;
 Console.WriteLine("Top Found Words:");
 foreach (var word in result)
 {
-    Console.WriteLine($"{++i}\t{word}");
+    Console.WriteLine($"{++i}.\t{word}");
 }
 
 Console.ReadKey();
