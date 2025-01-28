@@ -1,61 +1,184 @@
-Key Points for Implementation:
-Matrix Representation: Store the character matrix in a way that allows efficient row and column lookups. A 2D array or list of strings works well.
-Word Search:
-Check for words horizontally (row-by-row).
-Check for words vertically (column-by-column).
-Use a set to ensure words are counted only once.
-Optimization:
-Use a hash set for the matrix words for constant-time lookups.
-Efficiently find and count matches from the word stream.
-Output: Return the top 10 most repeated words found in the matrix.
+# Word Finder Console Application
 
-Analysis:
-Efficiency:
+A high-performance console application for efficiently finding words from a word stream within a character matrix. This implementation processes horizontal and vertical words and returns the top 10 most repeated matches.
 
-Matrix Preprocessing: Extracting words horizontally and vertically takes 
-O(n×m), where 
-n is the number of rows and 
-m is the number of columns.
-Word Stream Search: Using a hash set for matrix words ensures 
-O(1) lookup per word, making it 
-O(k) for a stream of 
-k words.
-Overall time complexity: 
-O(n×m+k).
-Space Complexity:
+---
 
-Storing matrix words in a hash set requires 
-O(n+m) space.
-The memory footprint is minimal as we only process words in the stream that match the matrix words.
-Scalability:
+## **Key Features**
 
-Works well for the maximum constraints of 64×64 matrix and large word streams due to efficient use of hash sets and grouping.
-Enhancements:
-Case-insensitive matching can be added by normalizing both matrix words and word stream inputs to lowercase.
-Extend to support diagonal word searches if needed.
+### **Matrix Word Extraction**
 
-Why This Approach?
-Efficiency: Combines filtering, grouping, and sorting in a highly optimized manner.
-Readability: Each step is clear and focused on a specific task.
-Scalability: Works efficiently for large word streams and matrix sizes within the problem's constraints.
+- **Horizontal Words**: Extracted directly from each row of the matrix.
+- **Vertical Words**: Constructed column-wise from top to bottom.
+- Ensures that both horizontal and vertical possibilities are covered for accurate word matching.
 
-**Key Features of Implementation**
-Matrix Word Extraction:
+### **Substring Matching**
 
-Horizontal Words: Extracted directly from each row.
-Vertical Words: Constructed column-wise from top to bottom.
-This ensures both horizontal and vertical possibilities are covered.
-=> Substring Matching:
-**.Where(word => _matrixWords.Any(matrixWord => matrixWord.Contains(word)))**
-For each word in the wordstream, checks if it exists as a substring in any of the pre-extracted words (_matrixWords).
-=>Normalization:
-Converts the wordstream words to lowercase to ensure case-insensitive matching, ensuring that "Chill" in the stream matches "chill" in the matrix.
+- Uses an efficient search algorithm to check if words from the word stream exist as substrings in any of the extracted matrix words:
+  ```csharp
+  .Where(word => _matrixWords.Any(matrixWord => matrixWord.Contains(word)))
+  ```
 
-=> Efficient Grouping and Sorting:
-Groups matched words by occurrence count, sorts by descending frequency, and resolves ties alphabetically:
-**.OrderByDescending(x => x.Count).ThenBy(x => x.Word)**
+### **Case-Insensitive Matching**
 
-Top 10 Results:
-Ensures only the top 10 most frequent matches are returned:
-**.Take(10)**
+- Normalizes both the word stream and matrix words to lowercase, ensuring matches like "Chill" correctly find "chill" in the matrix.
+
+### **Efficient Grouping and Sorting**
+
+- Groups matched words by their occurrence count.
+- Sorts results:
+  1. **By Frequency**: Words with the highest frequency appear first.
+  2. **Alphabetically**: Resolves ties using alphabetical order.
+  ```csharp
+  .OrderByDescending(x => x.Count).ThenBy(x => x.Word)
+  ```
+
+### **Top 10 Results**
+
+- Returns only the top 10 most frequent matches:
+  ```csharp
+  .Take(10)
+  ```
+
+---
+
+## **Key Points for Implementation**
+
+### **Matrix Representation**
+
+- The character matrix is stored as a list of strings for efficient row and column lookups.
+
+### **Word Search**
+
+- **Horizontally**: Scans row-by-row for matches.
+- **Vertically**: Constructs column-wise words for vertical matching.
+- Ensures that each word is counted only once using a set.
+
+### **Optimization**
+
+- Uses a **hash set** for storing matrix words to enable constant-time lookups.
+- Processes word streams efficiently with grouping and sorting.
+
+---
+
+## **Analysis**
+
+### **Efficiency**
+
+- **Matrix Preprocessing**:
+  - Extracting horizontal and vertical words takes , where  is the number of rows and  is the number of columns.
+- **Word Stream Search**:
+  - Hash set lookups ensure  complexity per word, resulting in  for a stream of  words.
+- **Overall Time Complexity**: .
+
+### **Space Complexity**
+
+- Storing matrix words in a hash set requires  space.
+- Minimal memory footprint as only relevant words from the word stream are processed.
+
+### **Scalability**
+
+- Efficient for:
+  - Maximum matrix size: .
+  - Large word streams.
+- Performance remains optimal due to hash-based lookups and streamlined grouping logic.
+
+---
+
+## **Enhancements**
+
+1. **Case-Insensitive Matching**:
+
+   - Normalize both the word stream and matrix words to lowercase for consistent matching.
+
+2. **Diagonal Search** *(Optional)*:
+
+   - Extend functionality to support diagonal word searches if required.
+
+---
+
+## **Why This Approach?**
+
+### **Efficiency**
+
+- Combines filtering, grouping, and sorting in a highly optimized manner, minimizing redundant computations.
+
+### **Readability**
+
+- Each step of the process is modular and focused on a specific task, making the code easy to understand and maintain.
+
+### **Scalability**
+
+- Efficiently handles large word streams and matrix sizes within the problem's constraints.
+
+---
+
+## **How It Works**
+
+1. **Matrix Preprocessing**:
+
+   - Extract horizontal words directly from rows.
+   - Extract vertical words by traversing each column.
+
+2. **Word Matching**:
+
+   - For each word in the stream, check if it exists as a substring of any matrix word.
+
+3. **Grouping and Sorting**:
+
+   - Group matched words by their frequency.
+   - Sort the groups by descending frequency and resolve ties alphabetically.
+
+4. **Result**:
+
+   - Return the top 10 most frequent matches.
+
+---
+
+## **Example**
+
+### **Input**
+
+Matrix:
+
+```
+abcdc
+fgwio
+chill
+pqnsd
+uvdxy
+```
+
+Word Stream:
+
+```
+chill, cold, wind
+```
+
+### **Output**
+
+```
+Top Found Words:
+1. chill
+2. cold
+3. wind
+```
+
+---
+
+## **How to Run**
+
+1. Clone the repository and navigate to the project directory.
+2. Build the project using your preferred IDE or .NET CLI:
+   ```bash
+   dotnet build
+   ```
+3. Run the console application:
+   ```bash
+   dotnet run
+   ```
+
+---
+
+Feel free to suggest enhancements or raise issues to improve this implementation further!
 
